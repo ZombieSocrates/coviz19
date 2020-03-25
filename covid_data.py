@@ -1,4 +1,6 @@
 import ipdb
+import pandas as pd
+import pathlib
 import requests
 
 from pprint import pprint
@@ -36,11 +38,10 @@ def current_tests_by_state():
     if rsp.status_code != 200:
         print(f"Errored with code {rsp.status_code}")
         return
-    return rsp.json() 
+    json_data = rsp.json()
+    return pd.DataFrame(data = [r for r in json_data]) 
 
 
 if __name__ == "__main__":
-    state_tests = requests.get(COVID_STATES)
-    if state_tests.status_code == 200:
-        state_data = state_tests.json()
-        ipdb.set_trace()
+    state_covid_df = current_tests_by_state()
+    ipdb.set_trace()
